@@ -1,23 +1,7 @@
-            match detail.text:
-                case s if s.startswith("ISBN"):
-                    details['isbn'] = s.split(': ')[1]
-                case s if s.startswith("Publisher"):
-                    details['publisher'] = detail.find_element(By.CSS_SELECTOR, "strong")
-                case s if s.startswith("Publication Date"):
-                    details['date'] = detail.find_element(By.CSS_SELECTOR, "strong")
-                case s if s.startswith("Language"):
-                    details['language'] = detail.find_element(By.CSS_SELECTOR, "strong")
-                case s if s.startswith("Format"):
-                    details['format'] = s.split(': ')[1]
-                    print('success')
-                    quit()
-                case s if s.startswith("ISBN13"):
-                    details['isbn13'] = detail.find_element(By.CSS_SELECTOR, "strong")
-
-
-        try:
-            el_more = el.find_element(By.CSS_SELECTOR, ".AllEditionsItem-details-button.is-link")
-            el_more.click()
-        except:
-            print(f"No more button found, for element") if kwargs['verbose'] else None
-        
+    for filename in os.listdir(data_dir()):
+        if filename.endswith('.json'):
+            filepath = os.path.join(data_dir(), filename)
+            return read_books_json_from_file(filepath)
+    with open(filepath, 'r') as f:
+        data = json.load(f)
+        return [Book(**b) for b in data]
